@@ -34,7 +34,7 @@ Add your api keys to the `.env` file.
 my-tweets
 spotify-this-song song name
 movie-this movie
-do-what-it-says`
+do-what-it-says
 ```
 ## Running Liri Examples
   ```
