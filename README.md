@@ -21,6 +21,10 @@ TWITTER_CONSUMER_SECRET=your-twitter-consumer-secret
 TWITTER_ACCESS_TOKEN_KEY=your-access-token-key
 TWITTER_ACCESS_TOKEN_SECRET=your-twitter-access-token-secret
 
+# OMDB API keys
+
+OMDB_APIKEY="trilogy"
+
 ```
 
 Add your api keys to the `.env` file.
