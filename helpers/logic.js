@@ -1,28 +1,38 @@
 require('dotenv').config();
+const util = require('util')
 const getSong = require("../calls/spotify");
 const getTweets = require("../calls/twitter");
 const getMovie = require("../calls/omdb");
 const readFile = require("../calls/file");
 const transforms = require("./transforms");
-const convertCommandToCall = require("./transforms").convertCommandToCall;
+const validCommands = require("../data/commands");
+const validateCommands = (command, arr) => arr.includes(command);
 
 const actions = {
-  spotifythissong: (query) => getSong(query),
-  moviethis: (query) => getMovie(query),
-  mytweets: () => getTweets(),
-  dowhatitsays : () => readFile(),
+  spotifythissong: (query) => {
+    return getSong(query)
+     .then(data=>transforms.parseSong(data.tracks.items))
+  },
+  moviethis: (query) => {
+    return getMovie(query)
+      .then(data=>transforms.parseMovie(data))
+  },
+  mytweets: (query) => {
+    return getTweets()
+     .then(data=>parseTweet(data))
+  },
+  dowhatitsays: (query) => {
+    return readFile()
+      .then(data=>transforms.parseFile(data))
+      .then(data=>executeCommand(data[0],data[1]))
+  },
 }
 
-const transformData = (data, command) => {
-  command = convertCommandToCall(command)
-  return transforms[command](data, actions)
-};
-
-module.exports = {
-  transformData: transformData,
-  validateCommands: (command, arr) => arr.includes(command),
-  executeCommand: (command, query) => {
-    command = convertCommandToCall(command)
-    return actions[command](query)
-  }
+const executeCommand = (command, query) => {
+  command = transforms.convertCommandToCall(command)
+  return actions[command](query)
 }
+
+module.exports.executeCommand = executeCommand;
+module.exports.validateCommands = validateCommands;
+module.exports.validCommands = validCommands;

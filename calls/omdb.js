@@ -9,7 +9,7 @@ const getParamsString = (title) => {
 
 const makeRequest = (path) => {
   return new Promise((resolve, reject) => {
-    req(path, (err, res, body) => err? reject(err) : resolve(JSON.parse(body)))
+    req(path, (err, res, bdy) => err? reject(err) : resolve(JSON.parse(bdy)))
   })
 }
 
